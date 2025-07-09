@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agricultural Platform Architecture</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            color: #2c3e50;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin: 0;
+            background: linear-gradient(45deg, #27ae60, #2ecc71);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .header p {
+            font-size: 1.2em;
+            margin: 10px 0;
+            color: #7f8c8d;
+        }
+        
+        .architecture-diagram {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .layer {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            border-left: 5px solid;
+        }
+        
+        .layer:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+        }
+        
+        .user-layer {
+            border-left-color: #3498db;
+            background: linear-gradient(135deg, #ebf8ff 0%, #f0f9ff 100%);
+        }
+        
+        .application-layer {
+            border-left-color: #e74c3c;
+            background: linear-gradient(135deg, #fef2f2 0%, #fef7f7 100%);
+        }
+        
+        .data-layer {
+            border-left-color: #f39c12;
+            background: linear-gradient(135deg, #fffbf0 0%, #fffcf5 100%);
+        }
+        
+        .layer h3 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 1.4em;
+            text-align: center;
+            border-bottom: 2px solid #ecf0f1;
+            padding-bottom: 10px;
+        }
+        
+        .component {
+            background: #f8f9fa;
+            margin: 15px 0;
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid #e9ecef;
+            transition: all 0.3s ease;
+        }
+        
+        .component:hover {
+            background: #e9ecef;
+            transform: scale(1.02);
+        }
+        
+        .component h4 {
+            color: #34495e;
+            margin: 0 0 10px 0;
+            font-size: 1.1em;
+        }
+        
+        .component p {
+            color: #7f8c8d;
+            margin: 0;
+            font-size: 0.9em;
+            line-height: 1.4;
+        }
+        
+        .government-schemes {
+            background: linear-gradient(135deg, #e8f5e8 0%, #f0f8f0 100%);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 30px 0;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .government-schemes h3 {
+            color: #27ae60;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+        }
+        
+        .schemes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        .scheme-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #27ae60;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .scheme-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+        
+        .scheme-card h4 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+        
+        .scheme-card p {
+            color: #7f8c8d;
+            margin: 0;
+            font-size: 0.9em;
+        }
+        
+        .data-flow {
+            background: linear-gradient(135deg, #f0f8ff 0%, #e6f3ff 100%);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 30px 0;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .data-flow h3 {
+            color: #3498db;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+        }
+        
+        .flow-diagram {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        
+        .flow-box {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            flex: 1;
+            min-width: 150px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .flow-box:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+        
+        .flow-arrow {
+            font-size: 2em;
+            color: #3498db;
+            margin: 0 10px;
+        }
+        
+        .tech-stack {
+            background: linear-gradient(135deg, #f8f0ff 0%, #f0e6ff 100%);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 30px 0;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .tech-stack h3 {
+            color: #9b59b6;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+        }
+        
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        
+        .tech-category {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #9b59b6;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .tech-category h4 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+        }
+        
+        .tech-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .tech-list li {
+            background: #f8f9fa;
+            margin: 8px 0;
+            padding: 10px;
+            border-radius: 5px;
+            color: #7f8c8d;
+            transition: all 0.3s ease;
+        }
+        
+        .tech-list li:hover {
+            background: #e9ecef;
+            transform: translateX(5px);
+        }
+        
+        .features {
+            background: linear-gradient(135deg, #fff8f0 0%, #fff5e6 100%);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 30px 0;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .features h3 {
+            color: #f39c12;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        .feature-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #f39c12;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+        
+        .feature-card h4 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+        
+        .feature-card p {
+            color: #7f8c8d;
+            margin: 0;
+            font-size: 0.9em;
+            line-height: 1.4;
+        }
+        
+        @media (max-width: 768px) {
+            .architecture-diagram {
+                grid-template-columns: 1fr;
+            }
+            
+            .flow-diagram {
+                flex-direction: column;
+            }
+            
+            .flow-arrow {
+                transform: rotate(90deg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🌾 AI-Powered Agricultural Platform</h1>
+            <p>Comprehensive Architecture for Farmer-Government-Market Integration</p>
+        </div>
+
+        <div class="architecture-diagram">
+            <div class="layer user-layer">
+                <h3>👥 User Interface Layer</h3>
+                
+                <div class="component">
+                    <h4>🤖 AI Multilingual Chatbot</h4>
+                    <p>Bhashini/Google Translate integration for local language support</p>
+                </div>
+                
+                <div class="component">
+                    <h4>📱 Mobile Application</h4>
+                    <p>Android app for farmers with voice/text input in regional languages</p>
+                </div>
+                
+                <div class="component">
+                    <h4>🌐 Web Portal</h4>
+                    <p>E-commerce platform for direct farmer-market connection</p>
+                </div>
+                
+                <div class="component">
+                    <h4>💻 VLE Integration</h4>
+                    <p>Common Service Center connectivity for local support</p>
+                </div>
+            </div>
+
+            <div class="layer application-layer">
+                <h3>⚙️ Application Layer</h3>
+                
+                <div class="component">
+                    <h4>🔧 Service Management</h4>
+                    <p>Labor booking, machinery rental, job matching services</p>
+                </div>
+                
+                <div class="component">
+                    <h4>🏛️ Government Integration</h4>
+                    <p>Real-time scheme updates, subsidy tracking, loan processing</p>
+                </div>
+                
+                <div class="component">
+                    <h4>💰 Financial Services</h4>
+                    <p>Loan management, insurance claims, subsidy distribution</p>
+                </div>
+                
+                <div class="component">
+                    <h4>🌾 Agri-Tourism</h4>
+                    <p>Village tourism booking and management system</p>
+                </div>
+            </div>
+
+            <div class="layer data-layer">
+                <h3>🗃️ Data & Integration Layer</h3>
+                
+                <div class="component">
+                    <h4>🆔 AgriStack Integration</h4>
+                    <p>Unique Farmer ID system by Government of India</p>
+                </div>
+                
+                <div class="component">
+                    <h4>🏛️ Government APIs</h4>
+                    <p>PMKISAN, PMFBY, TNPDS, loan databases</p>
+                </div>
+                
+                <div class="component">
+                    <h4>📊 Analytics Engine</h4>
+                    <p>Production tracking, market analysis, weather integration</p>
+                </div>
+                
+                <div class="component">
+                    <h4>🔒 Security & Auth</h4>
+                    <p>Secure farmer authentication and data protection</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="government-schemes">
+            <h3>🏛️ Integrated Government Schemes</h3>
+            <div class="schemes-grid">
+                <div class="scheme-card">
+                    <h4>💰 PM-KISAN</h4>
+                    <p>₹2,000 direct benefit transfer for small farmers with real-time status tracking</p>
+                </div>
+                
+                <div class="scheme-card">
+                    <h4>🛡️ PMFBY Insurance</h4>
+                    <p>Crop insurance for Rabi/Kharif seasons covering Paddy, Blackgram, Banana</p>
+                </div>
+                
+                <div class="scheme-card">
+                    <h4>🏦 Agricultural Loans</h4>
+                    <p>Debt management for sugarcane, subsidy tracking, Patta Chitta verification</p>
+                </div>
+                
+                <div class="scheme-card">
+                    <h4>🍚 TNPDS Integration</h4>
+                    <p>Rice distribution system optimization from farmer to consumer</p>
+                </div>
+                
+                <div class="scheme-card">
+                    <h4>🚜 Machinery Rental</h4>
+                    <p>Equipment sharing platform with financial assistance tracking</p>
+                </div>
+                
+                <div class="scheme-card">
+                    <h4>📈 Production Management</h4>
+                    <p>Handling overproduction of Sugarcane, Banana, Mango with market linkage</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="data-flow">
+            <h3>🔄 Data Flow Architecture</h3>
+            <div class="flow-diagram">
+                <div class="flow-box">
+                    <h4>👨‍🌾 Farmer Input</h4>
+                    <p>Voice/Text in local language</p>
+                </div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-box">
+                    <h4>🤖 AI Processing</h4>
+                    <p>NLP + Translation</p>
+                </div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-box">
+                    <h4>🏛️ Government APIs</h4>
+                    <p>Scheme verification</p>
+                </div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-box">
+                    <h4>📱 Response</h4>
+                    <p>Actionable insights</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="tech-stack">
+            <h3>🛠️ Technology Stack</h3>
+            <div class="tech-grid">
+                <div class="tech-category">
+                    <h4>Frontend</h4>
+                    <ul class="tech-list">
+                        <li>React Native (Mobile)</li>
+                        <li>React.js (Web)</li>
+                        <li>Progressive Web App</li>
+                        <li>Responsive Design</li>
+                    </ul>
+                </div>
+                
+                <div class="tech-category">
+                    <h4>AI/ML Services</h4>
+                    <ul class="tech-list">
+                        <li>Bhashini API</li>
+                        <li>Google Translate API</li>
+                        <li>Natural Language Processing</li>
+                        <li>Recommendation Engine</li>
+                    </ul>
+                </div>
+                
+                <div class="tech-category">
+                    <h4>Backend</h4>
+                    <ul class="tech-list">
+                        <li>Node.js/Python</li>
+                        <li>Microservices Architecture</li>
+                        <li>API Gateway</li>
+                        <li>Load Balancing</li>
+                    </ul>
+                </div>
+                
+                <div class="tech-category">
+                    <h4>Database</h4>
+                    <ul class="tech-list">
+                        <li>PostgreSQL</li>
+                        <li>MongoDB</li>
+                        <li>Redis Cache</li>
+                        <li>Data Warehouse</li>
+                    </ul>
+                </div>
+                
+                <div class="tech-category">
+                    <h4>Integration</h4>
+                    <ul class="tech-list">
+                        <li>Government APIs</li>
+                        <li>Banking APIs</li>
+                        <li>Weather Services</li>
+                        <li>Payment Gateways</li>
+                    </ul>
+                </div>
+                
+                <div class="tech-category">
+                    <h4>Infrastructure</h4>
+                    <ul class="tech-list">
+                        <li>Cloud Services (AWS/Azure)</li>
+                        <li>Kubernetes</li>
+                        <li>CI/CD Pipeline</li>
+                        <li>Monitoring & Analytics</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="features">
+            <h3>🌟 Key Platform Features</h3>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <h4>🔗 Direct Farmer-Market Connection</h4>
+                    <p>Eliminate middlemen, enable farmers to sell at convenient prices with real-time market updates</p>
+                </div>
+                
+                <div class="feature-card">
+                    <h4>👷 Labor Management System</h4>
+                    <p>Connect farmers with agricultural workers, share requirements, manage seasonal labor needs</p>
+                </div>
+                
+                <div class="feature-card">
+                    <h4>📰 Real-time Updates</h4>
+                    <p>Weather forecasts, crop disease alerts, government scheme notifications, market prices</p>
+                </div>
+                
+                <div class="feature-card">
+                    <h4>🏛️ Government Scheme Integration</h4>
+                    <p>Seamless access to all central and state schemes with status tracking and notifications</p>
+                </div>
+                
+                <div class="feature-card">
+                    <h4>🌍 Global Knowledge Sharing</h4>
+                    <p>Connect with farmers worldwide, share best practices, crop information, and innovations</p>
+                </div>
+                
+                <div class="feature-card">
+                    <h4>🎯 Agri-Tourism Integration</h4>
+                    <p>Government-backed village tourism platform to generate additional income for farmers</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
